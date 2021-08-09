@@ -11,6 +11,10 @@ io.on('connection', (socket) => {
         console.log(message);
         io.emit('message', `${socket.id.substr(0,2)} said ${message}`);
     });
+
+    socket.on('admin', (admin) => {
+        io.emit('message', admin);
+    });
 });
 
-http.listen(8080, () => console.log('listening on http://localhost:8080'));
+http.listen(8080, () => console.log('listening on http://0.0.0.0:8080'));
