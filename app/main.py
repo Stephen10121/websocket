@@ -1,4 +1,17 @@
 from flask import Flask, render_template, request, make_response, redirect, url_for, jsonify
+from functions import *
+from cryptography.fernet import Fernet
+import os
+
+def key_exists():
+    if os.path.isfile('key.key')!=True:
+        key = Fernet.generate_key()
+        file = open('key.key', 'wb')
+        file.write(key)
+        file.close()
+key_exists()
+
+add_def_user('test', 'test', 'test')
 
 app = Flask('app')
 

@@ -13,7 +13,7 @@ io.on('connection', (socket) => {
 
 	socket.on('message', (message) => {
 		console.log(`${socket.id}: ${message}`);
-		io.emit('message', `${dict[socket.id]}: ${message}`);
+		socket.broadcast.emit('message', `${dict[socket.id]}: ${message}`);
 	});
 
 	socket.on('admin', (admin) => {
