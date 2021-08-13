@@ -1,4 +1,4 @@
-const socket = io('ws://http://www.gruzservices.com:4321');
+const socket = io('ws://http://192.168.0.27:4321');
 
 socket.on('message', text => {
     const el = document.createElement('li');

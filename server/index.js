@@ -1,20 +1,24 @@
 const http = require('http').createServer();
 
 const io = require('socket.io')(http, {
-    cors: { origin: "*" }
+	cors: { origin: "*" }
 });
-
+var dict = {};
 io.on('connection', (socket) => {
-    console.log('a user connected');
+	console.log(`a user connected: ${socket.id}`);
+	socket.on('name', (name) => {
+		dict[socket.id] = name;
+		io.to(socket.id).emit('message', `MOD: Hello ${name}`);
+	});
 
-    socket.on('message', (message) => {
-        console.log(message);
-        io.emit('message', `${socket.id.substr(0,2)} said ${message}`);
-    });
+	socket.on('message', (message) => {
+		console.log(`${socket.id}: ${message}`);
+		io.emit('message', `${dict[socket.id]}: ${message}`);
+	});
 
-    socket.on('admin', (admin) => {
-        io.emit('message', admin);
-    });
+	socket.on('admin', (admin) => {
+		io.emit('message', `Admin: ${admin}`);
+	});
 });
 
-http.listen(8080, () => console.log('listening on http://0.0.0.0:8080'));
+http.listen(4321, () => console.log('listening on 192.168.0.27:4321'));
