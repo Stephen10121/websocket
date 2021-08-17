@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Signup</title>
+		<link type="text/css" rel="stylesheet" href="../static/style/form.css">
+		<link rel="shortcut icon" href="https://media.istockphoto.com/vectors/chat-icon-vector-sign-and-symbol-isolated-on-white-background-chat-vector-id1001103912?k=6&m=1001103912&s=170667a&w=0&h=Oq0d7770YfYZ44QsImdlW61FhQoASnen9G44yi9y5FM=" />
+	</head>
+	<body>
+		{% if error %}
+		{{error}}
+		{% endif %}
+		<div class="login">
+			<h1>Signup</h1>
+			<form method="post">
+				<input type="text" name="name" placeholder="Full Name" required="required"/>
+				<input type="text" name="email" placeholder="E-mail" requied="required"/>
+				<input type="text" name="u" placeholder="Username" required="required" />
+				<input type="password" name="p" placeholder="Password" required="required" />
+				<input type="password" name="rp" placeholder="Repeat Password" required="required"/>
+				<input type="submit" class="btn btn-primary btn-block btn-large" value="Signup">
+				<a style="text-decoration:none;margin-top:9px;" href="/login" class="btn btn-primary btn-block btn-large">Login</a>
+			</form>
+		</div>
+	</body>
+</html>

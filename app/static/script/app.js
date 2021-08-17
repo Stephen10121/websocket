@@ -1,5 +1,6 @@
-const socket = io('ws://192.168.0.27:4321');
-socket.emit('name', 'test');
+const socket = io('ws://192.168.0.27:123');
+const myName = document.cookie.split('; ').find(row => row.startsWith('WOWPOW')).split('=')[1];
+socket.emit('name', myName);
 socket.on('message', text => {
     const el = document.createElement('li');
     el.innerHTML = text;

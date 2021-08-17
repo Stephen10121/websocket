@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
-    <script defer src="../static/script/app.js"></script>
+    <link rel="shortcut icon" href="https://media.istockphoto.com/vectors/chat-icon-vector-sign-and-symbol-isolated-on-white-background-chat-vector-id1001103912?k=6&m=1001103912&s=170667a&w=0&h=Oq0d7770YfYZ44QsImdlW61FhQoASnen9G44yi9y5FM=" />
 </head>
 <body>
     <ul>
@@ -14,7 +14,36 @@
     </ul>
     <input placeholder="message" id="message">
     <button onclick="send_message()">Send</button>
-    <br><br><br><input placeholder="name" id="name">
-    <button id="sendname" onclick="send_name()">Send</button>
+    <a href="/logout">Logout</a>
 </body>
+<script>
+const socket = io('ws://www.gruzservices.com:8880');
+socket.on('message', text => {
+    const el = document.createElement('li');
+    el.innerHTML = text;
+    document.querySelector('ul').appendChild(el);
+});
+
+socket.emit('name2', document.cookie.split('; ').find(row => row.startsWith('WOWPOW')).split('=')[1]);
+
+function send_message() {
+    const text = document.getElementById('message').value;
+    socket.emit('message', text);
+}
+
+function send_name() {
+    const text = document.getElementById('name').value;
+    socket.emit('name', text);
+    document.getElementById('sendname').style.display = 'none';
+    document.getElementById('name').style.display = 'none';
+}
+
+
+document.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        const text = document.getElementById('message').value;
+        socket.emit('message', text);
+    }
+});
+</script>
 </html>
