@@ -6,42 +6,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="../static/script/contact.js"></script>
+    <link rel="stylesheet" href="../static/css/style.css">
     <link rel="shortcut icon" href="https://media.istockphoto.com/vectors/chat-icon-vector-sign-and-symbol-isolated-on-white-background-chat-vector-id1001103912?k=6&m=1001103912&s=170667a&w=0&h=Oq0d7770YfYZ44QsImdlW61FhQoASnen9G44yi9y5FM=" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
-    <ul>
-
-    </ul>
-    <input placeholder="message" id="message">
-    <button onclick="send_message()">Send</button>
-    <a href="/logout">Logout</a>
+  <div class="placeblock"></div>
+  <div class="grid-box">
+      <div class="contacts">
+          <div class="contact-search">
+              <center>
+                  <input id="contact-search-input" type="text" placeholder="Search Contacts">
+              </center>
+          </div>
+          <div class="contact-list">
+              <center>
+                  <button>
+                      <img src="avatar.png" alt="Cool stuff">
+                      <div class="name-info">
+                          <h3>Public Room</h3><br>
+                          <p class="green">Online</p>
+                      </div>
+                  </button>
+                  <button>
+                      <img src="avatar.png" alt="Cool stuff">
+                      <div class="name-info">
+                          <h3>Jeff Bezos</h3><br>
+                          <p class="green">Online</p>
+                      </div>
+                  </button>
+                  <button>
+                      <img src="avatar.png" alt="Cool stuff">
+                      <div class="name-info">
+                          <h3>Elon Musk</h3><br>
+                          <p class="red">Offline</p>
+                      </div>
+                  </button>
+                  <button>
+                      <img src="avatar.png" alt="Cool stuff">
+                      <div class="name-info">
+                          <h3>Bill Gates</h3><br>
+                          <p class="green">Online</p>
+                      </div>
+                  </button>
+              </center>
+          </div>
+      </div>
+      <div class="message-board">
+          <div class="contact-info">
+              <img src="avatar.png" alt="Profile Pic">
+              <div class="contact-info-name">
+                  <p>Chat with Everyone</p>
+                  <p id="messages">1 message.</p>
+              </div>
+              <div class="star">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                      <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                  </svg>
+              </div>
+          </div>
+          <div class="messages" id="messages-add">
+              <div class="me">
+                  <p class="inf">1</p>
+                  <p class="time">12:00, 08/25/2021</p>
+              </div>
+              <div class="them">
+                  <p class="inf">2</p>
+                  <p class="time">12:00, 08/25/2021</p>
+              </div>
+          </div>
+          <div class="send-message">
+              <center>
+                  <textarea name = "message-to-send" id = "message-to-send" placeholder = "Type your message" rows = "3"></textarea>
+              </center>
+              <center>
+                  <button onclick="send_message()">Send</button>
+              </center>
+          </div>
+      </div>
+      <a id="logout" href="/logout">Logout</a>
+  </div>
+  <div class="placeblock"></div>
 </body>
 <script>
+console.log("Testing page.");
+$(".messages").css({"height":$(".messages").height()-50});
+//const socket = io('ws://192.168.0.24:8880')
 const socket = io('ws://www.gruzservices.com:8880');
 socket.on('message', text => {
-    const el = document.createElement('li');
-    el.innerHTML = text;
-    document.querySelector('ul').appendChild(el);
+    var currentdate = new Date();
+    const mediv = document.createElement("div");
+    mediv.classList.add("me");
+    const inf = document.createElement('p');
+    inf.classList.add("inf");
+    const infnode = document.createTextNode(text);
+    inf.appendChild(infnode);
+    mediv.appendChild(inf);
+    const time = document.createElement('p');
+    time.classList.add("time");
+    const timenode = document.createTextNode("Me, " + String(currentdate).split("G")[0]);
+    time.appendChild(timenode);
+    mediv.appendChild(time);
+    const element = document.getElementById("messages-add");
+    element.appendChild(mediv);
+    var objDiv = document.getElementById("messages-add");
+    objDiv.scrollTop = objDiv.scrollHeight;
 });
 
 socket.emit('name2', document.cookie.split('; ').find(row => row.startsWith('WOWPOW')).split('=')[1]);
 
 function send_message() {
-    const text = document.getElementById('message').value;
+    const text = document.getElementById('message-to-send').value;
     socket.emit('message', text);
-}
-
-function send_name() {
-    const text = document.getElementById('name').value;
-    socket.emit('name', text);
-    document.getElementById('sendname').style.display = 'none';
-    document.getElementById('name').style.display = 'none';
 }
 
 
 document.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
-        const text = document.getElementById('message').value;
+        const text = document.getElementById('message-to-send').value;
         socket.emit('message', text);
     }
 });
